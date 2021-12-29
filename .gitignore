@@ -16,4 +16,5 @@ bin-int/
 **.png 
 **.jpg 
 **.dll 
+premake5.lua
 
