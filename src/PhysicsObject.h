@@ -1,25 +1,20 @@
 #pragma once
 #include <glm/vec3.hpp>
 #include "../../Proof/src/Proof/Resources/Math/Vector.h"
-#include "BoundingSphere.h"
+#include "Collider/SphereCollider.h"
 namespace ProofPhysicsEngine {
-	class PhysicsObject
+	class PhysicsObject // rename PhysicsBody
 	{
 	public:
-		PhysicsObject(Proof::Vector<>* position, Proof::Vector<>* velocity, float *radius)
-		{
-			Position = position;
-			Veclocity =velocity;
-			m_Radius = radius;
+		PhysicsObject(Collider& collider){
+			m_Collider = &collider;
 		}
 		void Update(float delta);
-		inline BoundingSphere GetBoudingSphere()const {
-			return BoundingSphere(glm::vec3(*Position), *m_Radius);
+		inline Collider* GetCollider() {
+			return m_Collider;
 		}
 	private:
-		Proof::Vector<>* Position =nullptr;
-		Proof::Vector<>* Veclocity =nullptr;
-		float *m_Radius = nullptr;
-		friend class PhysicsEngine;
+		friend class PhysicsWorld;
+		Collider* m_Collider;
 	};
 }
