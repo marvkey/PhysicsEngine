@@ -1,5 +1,5 @@
 #include "SphereCollider.h"
-
+#include "CubeCollider.h"
 namespace ProofPhysicsEngine {
 	
 	IntersectData SphereCollider::IntersectSphereCollider(const SphereCollider& other){
@@ -8,6 +8,9 @@ namespace ProofPhysicsEngine {
 		float distance = CenterDistance - radiusDistance;
 		return IntersectData( CenterDistance < radiusDistance, distance );
 		//CenterDistance < radiusDistance // if it is equal the spheres are touched  
+	}
+	IntersectData SphereCollider::IntersectCubeCollider(const CubeCollider& other){
+		return other.IntersectSphereCollider(*this);
 	}
 } 
 

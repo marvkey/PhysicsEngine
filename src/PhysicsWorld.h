@@ -3,6 +3,7 @@
 #include "PhysicsObject.h"
 #include "../../../Proof/src/Proof/Resources/Math/Vector.h"
 #include "Collider/SphereCollider.h"
+#include "Collider/CubeCollider.h"
 namespace ProofPhysicsEngine {
 	class PhysicsWorld{
 	public:
@@ -13,6 +14,7 @@ namespace ProofPhysicsEngine {
 	private:
 		std::vector<PhysicsObject>m_Objects;
 		std::list<SphereCollider>m_SphereColliders;
+		std::list<CubeCollider>m_CubeColliders;
 	};
 }
 

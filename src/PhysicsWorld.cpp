@@ -10,7 +10,12 @@ namespace ProofPhysicsEngine {
 			m_Objects.emplace_back(object);
 			m_Objects.back().m_Collider = &m_SphereColliders.back();
 		}
-
+		if (object.m_Collider->GetType() == ColliderType::Cube) {
+			CubeCollider* cubeDereived = (CubeCollider*)object.m_Collider;
+			m_CubeColliders.emplace_back(CubeCollider(cubeDereived->Center,cubeDereived->Scale, cubeDereived->Rotation));
+			m_Objects.emplace_back(object);
+			m_Objects.back().m_Collider = &m_CubeColliders.back();
+		}
 		return m_Objects.back();
 	}
 	void PhysicsWorld::Simulate(float delta){
