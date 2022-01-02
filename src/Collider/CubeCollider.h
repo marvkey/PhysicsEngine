@@ -15,7 +15,6 @@ namespace ProofPhysicsEngine {
 		IntersectData IntersectCubeCollider(const CubeCollider& other);
 		Proof::Vector<float> Center;
 		Proof::Vector<float> Size;
-		Proof::Vector<float> Rotation;
 	};
 }
 

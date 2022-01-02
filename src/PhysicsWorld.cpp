@@ -10,6 +10,7 @@ namespace ProofPhysicsEngine {
 			m_Objects.emplace_back(object);
 			m_Objects.back().m_Collider = &m_SphereColliders.back();
 		}
+
 		return m_Objects.back();
 	}
 	void PhysicsWorld::Simulate(float delta){
@@ -29,7 +30,6 @@ namespace ProofPhysicsEngine {
 			for (uint64_t j = i + 1; j < m_Objects.size(); j++) { 
 				if (m_Objects[i].GetCollider()->IsTrigger == true)
 					return;
-			
 				IntersectData intersectData = m_Objects[i].m_Collider->Intersect(
 					*m_Objects[j].m_Collider
 				);

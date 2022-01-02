@@ -12,7 +12,7 @@ namespace ProofPhysicsEngine {
 		void HandleCollisions();
 	private:
 		std::vector<PhysicsObject>m_Objects;
-		std::vector<SphereCollider>m_SphereColliders;
+		std::list<SphereCollider>m_SphereColliders;
 	};
 }
 
