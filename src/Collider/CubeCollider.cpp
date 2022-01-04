@@ -22,27 +22,27 @@ namespace ProofPhysicsEngine {
 			if (!OverlappOnAxis(*this, other, test[i])) {
 				return IntersectData(false, distance); // Seperating axis found
 			}
+			
 		}
 		return IntersectData(true, distance);
 	}
 	IntersectData CubeCollider::IntersectSphereCollider(const SphereCollider& other)const{
-		Proof::Vector<float> Point = ClosestPoint(other.Center);
-		float distance = (other.Center - Point).GetLength();
-		return IntersectData(distance < other.Radius , distance);
+		Proof::Vector<float> closestPoint = ClosestPoint(other.Center);
+		float distance = (other.Center - closestPoint).GetLength();
+		return IntersectData(distance < other.Radius, distance);
 	}
 	bool CubeCollider::OverlappOnAxis(const CubeCollider& other1, const CubeCollider& other2, const Proof::Vector<float>& axis)
 	{
 		Interval a = GetInterval(other1, axis);
 		Interval b = GetInterval(other2, axis);
 		return ((b.min <= a.max) && (a.min <= b.max));
-		return false;
 	}
 	Interval CubeCollider::GetInterval(const CubeCollider& other, const Proof::Vector<float>& axis){
-		Proof::Vector<float> vertex[8];
+		static Proof::Vector<float> vertex[8]; // we are not reallocation everytime we call
 		Proof::Vector<float> center = other.Center;
 		Proof::Vector<float> extent = other.Scale;
 		glm::mat3 boxOrientation = other.GetOrientation();
-		Proof::Vector<float> A[]{
+		static Proof::Vector<float> A[]{
 			Proof::Vector<float>(boxOrientation[0]),
 			Proof::Vector<float>(boxOrientation[1]),
 			Proof::Vector<float>(boxOrientation[2]),
@@ -97,7 +97,7 @@ namespace ProofPhysicsEngine {
 				if (distance < -Scale.Z)
 					distance = -Scale.Z;
 			}
-			result = result + (axis* distance);
+			result = result + (axis * distance);
 		}
 		return result;
 	}

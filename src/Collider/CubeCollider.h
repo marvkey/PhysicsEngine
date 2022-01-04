@@ -31,12 +31,17 @@ namespace ProofPhysicsEngine {
 
 		Proof::Vector<float> ClosestPoint(const Proof::Vector<float>& other)const;
 		glm::mat3 GetOrientation()const {
-			return glm::translate(glm::mat4(1.0f), { Center }) *
-					glm::rotate(glm::mat4(1.0f), glm::radians(Rotation.X), { 1,0,0 })
-					* glm::rotate(glm::mat4(1.0f), glm::radians(Rotation.Y), { 0,1,0 })
-					* glm::rotate(glm::mat4(1.0f), glm::radians(Rotation.Z), { 0,0,1 })
-					* glm::scale(glm::mat4(1.0f), { Scale });
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::translate(model, { Center.X,Center.Y,Center.Z });
+			model = glm::rotate(model, Rotation.X, { 1,0,0 });// WE are NOT APPLYING Radians here 
+			model = glm::rotate(model, Rotation.Y, { 0,1,0 });// WE are NOT APPLYING Radians here 
+			model = glm::rotate(model, Rotation.Z, { 0,0,1 });// WE are NOT APPLYING Radians here 
+			model = glm::scale(model, { Scale.X,Scale.Y,Scale.Z });
+
+			return model;
 		}
+
+	
 		IntersectData IntersectCubeCollider(const CubeCollider& other)const;
 		IntersectData IntersectSphereCollider(const SphereCollider& other)const;
 
