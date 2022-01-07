@@ -13,6 +13,7 @@ namespace ProofPhysicsEngine {
 			Proof::Vector<>(otherOrientation[1]),
 			Proof::Vector<>(otherOrientation[2]),
 		};
+	
 		for (int i = 0; i < 3; i++) { // fill the remaining of test
 			test[6 + i * 3 + 0] = Proof::Vector<float>::Cross(test[i], test[0]);
 			test[6 + i * 3 + 1] = Proof::Vector<float>::Cross(test[i], test[1]);
