@@ -10,5 +10,16 @@ namespace ProofPhysicsEngine {
 		*update postion
 		*/
 		Position += Velocity * deltaTime;
+		// acceleration from the force
+		// using inverse mass we can set objects with 0 mass therfore having infinite masses 
+		Proof::Vector<float> resultingAcc = Acceleration;
+		resultingAcc += GravityForce * (1 / Mass);
+
+		//updating linear velocity from acceleration
+		Velocity += resultingAcc * deltaTime;
+		
+		// adding drag we are pasin it to the power of delta time 
+		// so we are not adding drag every frame 
+		Velocity *= pow(Damping, deltaTime);
 	}
 }
