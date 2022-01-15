@@ -18,12 +18,18 @@ namespace ProofPhysicsEngine {
 		*holds the direction of contact
 		*/
 		Proof::Vector<float> ContactNormal = {};
+
+		/*
+		* how deep the contact is
+		*/
+		float Penetration = 0.0f;
 	protected:
 		/*
 		* resoves the collision
 		*/
 		void ResolveContact(float deltaTime) {
 			ResolveImpulse(deltaTime);
+			ResolvePenetration(deltaTime);
 		}
 
 		/**
@@ -71,6 +77,28 @@ namespace ProofPhysicsEngine {
 				// Particle 1 goes in the opposite direction.
 				Particles[1]->Velocity = Particles[1]->Velocity +
 					impulsePerIMass * -Particles[1]->GetMass();
+			}
+		}
+
+		void ResolvePenetration(float DeltaTime){
+			// If we don’t have any penetration, skip this step.
+			if (Penetration <= 0) return;
+			// The movement of each object is based on its inverse mass, so
+			// total that.
+			float totalInverseMass = 1/Particles[0]->GetMass();
+			if (Particles[1]) totalInverseMass += 1/Particles[1]->GetMass();
+			// If all particles have infinite mass, then we do nothing.
+			if (totalInverseMass <= 0) return;
+			// Find the amount of penetration resolution per unit of inverse mass.
+			Proof::Vector<float>  movePerIMass = ContactNormal *
+				(-Penetration / totalInverseMass);
+			// Apply the penetration resolution.
+			Particles[0]->Position = Particles[0]->Position +
+				movePerIMass * (1/Particles[0]->GetMass());
+			if (Particles[1])
+			{
+				Particles[1]->Position = Particles[1]->Position +
+					movePerIMass * (1/Particles[1]->GetMass());
 			}
 		}
 	};
