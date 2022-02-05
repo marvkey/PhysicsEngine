@@ -22,6 +22,18 @@ namespace ProofPhysicsEngine {
 		for (PhysicsObject& physicsObject : m_Objects) {
 			physicsObject.Update(delta);
 		}
+		// RIGID BODY
+		{
+			BodyRegistration* reg = m_FirstBody;
+			while (reg != nullptr) {
+				if (reg->body.Gravity == true) {
+					GravityData.UpdateForce(reg->body);
+				}
+				reg->body.Update(delta);
+				reg = reg->next;
+			}
+
+		}
 	}
 	void PhysicsWorld::HandleCollisions(){
 		for (uint64_t i = 0; i < m_Objects.size(); i++) {

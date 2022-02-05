@@ -22,6 +22,11 @@ namespace ProofPhysicsEngine {
 		}
 		IntersectData IntersectSphereCollider(const SphereCollider& other);
 		IntersectData IntersectCubeCollider(const CubeCollider& other);
+		virtual float GetVolume() {
+			//VOLUME OF SPHERE =
+			//					4/3(PIE)Radius^3
+			(4 / 3)* Proof::Math::PIE()* Radius* Radius* Radius;
+		}
 		Proof::Vector<> Center = {0,0,0};
 		float Radius = 1;
 	};
