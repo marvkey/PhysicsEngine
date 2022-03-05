@@ -19,20 +19,13 @@ namespace ProofPhysicsEngine {
 		return m_Objects.back();
 	}
 	void PhysicsWorld::Simulate(float delta){
-		for (PhysicsObject& physicsObject : m_Objects) {
-			physicsObject.Update(delta);
-		}
 		// RIGID BODY
 		{
-			BodyRegistration* reg = m_FirstBody;
-			while (reg != nullptr) {
-				if (reg->body.Gravity == true) {
-					GravityData.UpdateForce(reg->body);
-				}
-				reg->body.Update(delta);
-				reg = reg->next;
+			for (auto& [id,rigidBody]:m_RigidBodies) {
+				if (rigidBody.Gravity == true) 
+					GravityData.UpdateForce(rigidBody);
+				rigidBody.Update(delta);
 			}
-
 		}
 	}
 	void PhysicsWorld::HandleCollisions(){
@@ -59,5 +52,10 @@ namespace ProofPhysicsEngine {
 				}
 			}
 		}
+	}
+	RigidBody& PhysicsWorld::AddRigidBody(const RigidBody& object) {
+		uint64_t Id = Proof::Random::Int<uint64_t>();
+		m_RigidBodies.insert({ Id,object });
+		return m_RigidBodies.at(Id);
 	}
 }

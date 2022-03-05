@@ -3,6 +3,7 @@
 #include "../IntersectData.h"
 #include "Collider.h"
 #include "../../../Proof/src/Proof/Resources/Math/Vector.h"
+#include "../../../Proof/src/Proof/Resources/Math/Math.h"
 
 namespace ProofPhysicsEngine {
 	class CubeCollider;
@@ -22,11 +23,15 @@ namespace ProofPhysicsEngine {
 		}
 		IntersectData IntersectSphereCollider(const SphereCollider& other);
 		IntersectData IntersectCubeCollider(const CubeCollider& other);
-		virtual float GetVolume() {
+
+		static uint32_t SphereAndCube(const SphereCollider& one, const CubeCollider& two, CollisionData& data);
+		static uint32_t SphereAndSphere(const SphereCollider& one, const SphereCollider& two, CollisionData& data);
+		virtual float GetVolume()const {
 			//VOLUME OF SPHERE =
 			//					4/3(PIE)Radius^3
-			(4 / 3)* Proof::Math::PIE()* Radius* Radius* Radius;
+			return (4 / 3)* Proof::Math::PIE()* Radius* Radius* Radius;
 		}
+		// position
 		Proof::Vector<> Center = {0,0,0};
 		float Radius = 1;
 	};

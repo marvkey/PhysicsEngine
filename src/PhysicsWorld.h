@@ -6,6 +6,7 @@
 #include "Collider/CubeCollider.h"
 #include "Body/RigidBody.h"
 #include "Forces/Gravity.h"
+#include <unordered_map>
 namespace ProofPhysicsEngine {
 	/**
 	* Holds a single rigid body in a linked list of bodies.
@@ -18,11 +19,13 @@ namespace ProofPhysicsEngine {
 	class PhysicsWorld{
 	public:
 		GravityForce GravityData;
-		Proof::Vector<> Gravity = { 0,-10,0 };
+		Proof::Vector<> Gravity = { 0,-9.8,0 };
 		PhysicsObject& AddObject(const PhysicsObject& object);
 		void Simulate(float delta);
 		void HandleCollisions();
+		RigidBody& AddRigidBody(const RigidBody& object);
 	private:
+		std::unordered_map<uint64_t, RigidBody> m_RigidBodies; // ID,RigidBody;
 		/**
 		* Holds the head of the list of registered bodies.
 		*/
