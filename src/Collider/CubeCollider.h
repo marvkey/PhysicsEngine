@@ -73,6 +73,46 @@ namespace ProofPhysicsEngine {
 		virtual float GetVolume()const {
 			return Scale.GetLength();
 		}
+		static unsigned boxAndPoint(
+			const CubeCollider& box,
+			const Proof::Vector<float>& point,
+			CollisionData& data
+		) {
+			// Transform the point into box coordinates.
+			Proof::Vector<float> relPt = point * box.GetOrientation();
+			Proof::Vector<float> normal;
+
+			// penetration is least deep.
+			float min_depth = box.Center.X/2  -abs(relPt.X);
+			if (min_depth < 0) return 0;
+			normal = box.GetOrientation()[0]  * float((relPt.X < 0) ? -1 : 1);
+			float depth = box.Center.Y/2- abs(relPt.Y);
+			if (depth < 0) return 0;
+			else if (depth < min_depth) {
+				min_depth = depth;
+				normal = box.GetOrientation()[1] * float((relPt.Y < 0) ? -1 : 1);
+			}
+			depth = box.Center.Z/2 - abs(relPt.Z);
+			if (depth < 0) return 0;
+			else if (depth < min_depth) {
+				min_depth = depth;
+				normal = box.GetOrientation()[2] * float((relPt.Z < 0) ? -1 : 1);
+			}
+			// Compile the contact.
+			ContactData* contact = data.Contacts;
+			contact->ContactNormal = normal;
+			contact->ContactPoint = point;
+			contact->penetration = min_depth;
+			// Write the appropriate data.
+			contact->body[0] = box.GetBody();
+			// Note that we don’t know what rigid body the point
+			// belongs to, so we just use NULL. Where this is called
+			// this value can be left, or filled in.
+			contact->body[1] = NULL;
+			contact->Restitution = data.Restitution;
+			contact->Friction = data.Friction;
+			return 1;
+		}
 	
 		IntersectData IntersectCubeCollider(const CubeCollider& other)const;
 		IntersectData IntersectSphereCollider(const SphereCollider& other)const;
